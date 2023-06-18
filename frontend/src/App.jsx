@@ -4,12 +4,13 @@ import React from "react";
 //"npm i --save react-hook-form in frontend folder"
 import { useForm } from "react-hook-form";
 
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import axios from "axios";
 
 export default function App() {
   const { register, handleSubmit } = useForm(); //useFrom
-  const [data, setData] = useState(""); // using state to create a variable named data that is initially a null string
+  const [data, setData] = useState("");
+  const [product,setProduct] = useState([]) // using state to create a variable named data that is initially a null string
 
   const onSubmit = async (data) => {
     //useForm submit function that collects data and store it in "data variable" create by useState above
@@ -30,6 +31,21 @@ export default function App() {
       console.log(error);
     }
   };
+  useEffect(()=>{
+    getData()
+  },[])
+
+const getData = async (data) => {
+  try {
+    const incomingData = await axios.get("http://localhost:4578/getData")
+    console.log(incomingData.data);
+    setProduct(incomingData)
+
+
+  } catch (error) {
+    console.log(error);
+  }
+}
   return (
     <div>
       <h1 className="text-center mt-3 ">
